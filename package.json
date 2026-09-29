@@ -1,0 +1,47 @@
+{
+  "name": "muse-calling-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dashboard": "node dashboard/server.mjs",
+    "dashboard:open": "node dashboard/open.mjs",
+    "test:dashboard": "node --test dashboard/tests/*.node.mjs",
+    "dev": "wrangler dev",
+    "types": "wrangler types --strict-vars false",
+    "check": "tsc --noEmit",
+    "test": "vitest run && npm run test:dashboard && npm run test:setup",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "deploy": "node scripts/deploy.mjs",
+    "mcp": "tsx packages/mcp/index.ts",
+    "supervise": "tsx scripts/supervise.ts",
+    "setup": "node scripts/setup.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "secrets": "node scripts/secrets.mjs",
+    "agent:key": "node scripts/agent-key.mjs",
+    "pca": "node scripts/pca.mjs",
+    "test:ivr": "node scripts/ivr-smoke.mjs",
+    "test:setup": "node --test scripts/tests/*.node.mjs",
+    "audit:public": "node scripts/audit-public.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "jose": "^6.0.0",
+    "libphonenumber-js": "^1.13.13",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.2.1",
+    "@cloudflare/workers-types": "latest",
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.1.0",
+    "wrangler": "^4.114.0"
+  },
+  "description": "Self-hosted full-duplex phone assistant with GPT-Live, Telnyx, and live agent consultation.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

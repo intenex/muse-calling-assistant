@@ -1,0 +1,23 @@
+{
+  "version": "1",
+  "mode": "simulation",
+  "destination": {
+    "number": "+14155550100",
+    "business": "Synthetic test recipient"
+  },
+  "caller": {
+    "name": "Test Owner"
+  },
+  "objective": "Ask about available appointment times without booking.",
+  "successCriteria": [
+    "Collect availability"
+  ],
+  "origin": {
+    "agent": "example"
+  },
+  "recording": "off",
+  "simulation": {
+    "durationSeconds": 75,
+    "questionAfterSeconds": 5
+  }
+}

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Calling Assistant</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <aside>
+      <div class="brand"><span class="logo">↗</span> Calling Assistant</div>
+      <p class="tagline">A capable voice on your behalf.</p>
+      <button class="nav selected" id="new-call">＋ New call</button>
+      <div class="section-label">RECENT CALLS</div>
+      <div id="history" class="history">
+        <p class="muted">Connect to see your calls.</p>
+      </div>
+      <div class="sidebar-bottom">
+        <a href="/openapi.json" target="_blank">API reference ↗</a
+        ><span>Private by default · Built for delegation</span>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">PERSONAL CALLING SERVICE</p>
+          <h1>Your next conversation,<br />taken care of.</h1>
+        </div>
+        <span id="connection" class="pill">Not connected</span>
+      </header>
+      <div id="notice" role="status" hidden></div>
+      <section id="login" class="card login">
+        <div>
+          <h2>Connect to your assistant</h2>
+          <p>
+            Use your owner key or sign in through your Cloudflare Access domain.
+            Your key stays in this tab’s memory.
+          </p>
+        </div>
+        <form id="login-form">
+          <label
+            >API key<input
+              id="api-key"
+              type="password"
+              autocomplete="off"
+              placeholder="Owner or scoped agent key" /></label
+          ><button class="primary">Connect</button>
+        </form>
+      </section>
+      <div id="workspace" hidden>
+        <div class="stats">
+          <section class="stat">
+            <span>Monthly spending</span><strong id="spending">—</strong
+            ><small id="reserved">Includes held reservations</small>
+          </section>
+          <section class="stat">
+            <span>Calling mode</span><strong id="mode-state">Simulation</strong
+            ><small id="live-explanation">No phone or AI charges</small>
+          </section>
+          <section class="stat">
+            <span>Service status</span><strong id="service-state">Ready</strong
+            ><small>One call at a time</small>
+          </section>
+        </div>
+        <div class="layout">
+          <section id="composer" class="card">
+            <div class="card-heading">
+              <span class="step">01</span>
+              <div>
+                <h2>Give your assistant a brief</h2>
+                <p>The facts, the goal, and where to draw the line.</p>
+              </div>
+            </div>
+            <form id="call-form">
+              <div class="row">
+                <label
+                  >Person or business<input
+                    name="business"
+                    required
+                    placeholder="Recipient name"
+                    maxlength="200" /></label
+                ><label
+                  >Phone number<input
+                    name="number"
+                    type="tel"
+                    required
+                    placeholder="+14155550100"
+                    pattern="\+1[2-9][0-9]{9}"
+                /></label>
+              </div>
+              <label
+                >Your name<input
+                  name="name"
+                  placeholder="Your name"
+                  required
+                  placeholder="The person I’m calling for"
+                  maxlength="200"
+              /></label>
+              <label
+                >Who is calling?<select name="persona">
+                  <option value="assistant">Personal assistant</option>
+                  <option value="first_person">First-person requests</option>
+                </select></label
+              >
+              <label
+                >What should this call accomplish?<textarea
+                  name="objective"
+                  required
+                  rows="3"
+                  placeholder="Ask about availability and compare the options. Don’t book until I approve."
+                  maxlength="4000"
+                ></textarea>
+              </label>
+              <label
+                >Facts I can share<textarea
+                  name="facts"
+                  rows="3"
+                  placeholder="One fact per line. Keep private limits and secrets out of this field."
+                  maxlength="8000"
+                ></textarea>
+              </label>
+              <div class="row">
+                <label
+                  >Mode<select name="mode">
+                    <option value="simulation">Simulation · no charges</option>
+                    <option id="live-option" value="live" disabled>
+                      Live phone call
+                    </option>
+                  </select></label
+                ><label
+                  >Maximum minutes<input
+                    name="minutes"
+                    type="number"
+                    value="15"
+                    min="1"
+                    max="45"
+                    required
+                /></label>
+              </div>
+              <label id="simulation-label"
+                >Simulation duration<select name="simulation">
+                  <option value="480">8 minutes · question at minute 3</option>
+                  <option value="2700">
+                    45 minutes · question at minute 20
+                  </option>
+                  <option value="75">75 seconds · quick interface check</option>
+                </select></label
+              >
+              <details>
+                <summary>Full brief & authorization</summary>
+                <p>
+                  Optional JSON override for preferences, private facts, exact
+                  authorized terms and fallbacks. This replaces the form brief;
+                  validate before starting.
+                </p>
+                <textarea
+                  id="advanced"
+                  rows="10"
+                  spellcheck="false"
+                  placeholder="Paste a version 1 CallBrief"
+                ></textarea
+                ><button id="populate-json" type="button" class="secondary">
+                  Copy form into JSON editor
+                </button>
+              </details>
+              <div class="form-footer">
+                <span
+                  >Default limits: $5 per call · $1 reasoning<br />No commitment
+                  without approved terms.</span
+                ><button class="primary" type="submit">Review call →</button>
+              </div>
+            </form>
+            <div id="review" class="review" hidden>
+              <h3>Ready to start</h3>
+              <p id="review-info"></p>
+              <pre id="review-brief"></pre>
+              <button id="start" class="primary">Start simulation</button
+              ><button id="edit" class="secondary">Edit brief</button>
+            </div>
+          </section>
+          <section id="active" class="card" hidden>
+            <div class="card-heading">
+              <span class="step">↗</span>
+              <div>
+                <h2 id="call-title">Your call</h2>
+                <p id="call-subtitle"></p>
+              </div>
+              <span id="call-status" class="pill"></span>
+            </div>
+            <div id="decisions"></div>
+            <div class="transcript-header">
+              <h3>Conversation</h3>
+              <span>Generated speech ≠ verified playback</span>
+            </div>
+            <div id="transcript" class="transcript">
+              <p class="muted">
+                The transcript will appear here. Simulations don’t generate
+                audio.
+              </p>
+            </div>
+            <div id="playback" class="muted"></div>
+            <form id="context-form">
+              <label
+                >Add a fact or correction<input
+                  id="new-context"
+                  placeholder="Shareable information for the call"
+                  maxlength="4000"
+                  required /></label
+              ><button class="secondary">Send update</button>
+            </form>
+            <div id="result" class="result" hidden></div>
+            <div class="form-footer">
+              <span id="call-cost"></span
+              ><button id="cancel" class="danger">End call</button>
+            </div>
+            <details>
+              <summary>Event log</summary>
+              <pre id="event-log"></pre>
+            </details>
+          </section>
+          <section class="rail">
+            <div class="card guide">
+              <span class="guide-icon">◎</span>
+              <h3>Fast conversation.<br />Thoughtful decisions.</h3>
+              <p>
+                The voice agent handles the conversation. Your brief sets its
+                boundaries. You or your agent can answer questions while it’s on
+                the line.
+              </p>
+              <div class="rule"></div>
+              <p>
+                <b>When information is missing</b><br />You’ll see a decision
+                card with a deadline. Without an answer, the assistant follows
+                your explicit fallback.
+              </p>
+              <p>
+                <b>You stay in control</b><br />Update context or end the call
+                at any time.
+              </p>
+            </div>
+            <div class="card admin" id="admin" hidden>
+              <h3>Owner controls</h3>
+              <button id="pause" class="secondary">Pause new calls</button
+              ><button id="kill" class="danger">Stop all calling</button
+              ><button id="resume" class="secondary">Resume service</button>
+              <details>
+                <summary>Create agent credential</summary>
+                <form id="credential-form">
+                  <label
+                    >Agent name<input id="agent-name" value="Muse" required
+                  /></label>
+                  <p>
+                    Simulation only. Call creation, reading, answers, context
+                    and cancellation. Expires in 30 days.
+                  </p>
+                  <button class="secondary">Create scoped key</button>
+                </form>
+                <textarea
+                  id="credential-result"
+                  readonly
+                  hidden
+                  aria-label="New credential"
+                ></textarea>
+              </details>
+            </div>
+          </section>
+        </div>
+      </div>
+      <footer>
+        Audio is not recorded. Transcripts expire after 30 days. Costs remain
+        provisional until reconciled.
+      </footer>
+    </main>
+  </body>
+</html>

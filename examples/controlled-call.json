@@ -1,0 +1,24 @@
+{
+  "version": "1",
+  "mode": "live",
+  "destination": {
+    "number": "+14155550100",
+    "business": "Synthetic test recipient"
+  },
+  "caller": {
+    "name": "Test Owner"
+  },
+  "objective": "Briefly test this personal assistant voice. Ask for a made-up reference number, repeat it, invite a one-digit correction, and repeat the corrected number. Thank the participant and end after the goodbye. Do not book or agree to anything.",
+  "successCriteria": [
+    "Accurately repeat a corrected reference and finish audibly"
+  ],
+  "origin": {
+    "agent": "example"
+  },
+  "recording": "on",
+  "limits": {
+    "maxMinutes": 2,
+    "maxCostCents": 50,
+    "backendCents": 10
+  }
+}

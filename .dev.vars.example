@@ -1,0 +1,16 @@
+# Generate OWNER_API_KEY with openssl rand -hex 32. Never commit .dev.vars.
+OWNER_API_KEY=
+MEDIA_SIGNING_KEY=
+OPENAI_API_KEY=
+TELNYX_API_KEY=
+TELNYX_PUBLIC_KEY=
+TELNYX_CONNECTION_ID=
+TELNYX_FROM_NUMBER=
+# Optional owner-only Cloudflare Access (both required)
+ACCESS_TEAM_DOMAIN=
+ACCESS_AUDIENCE=
+# Optional HMAC key for owner-registered callback endpoints
+CALLBACK_SIGNING_KEY=
+# Optional manual controlled-phone evaluation. Empty by default; at most 1 hour.
+CONTROLLED_TEST_NUMBER=
+CONTROLLED_TEST_UNTIL=

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Call Journal · Calling Assistant</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="Call Journal home"
+        ><span class="brand-icon">↗</span
+        ><span>Call Journal<small>YOUR PERSONAL ASSISTANT</small></span></a
+      >
+      <div class="nav-label">WORKSPACE</div>
+      <nav aria-label="Call filters">
+        <button data-filter="live" class="nav active">
+          <span>↗</span> Phone calls <b id="live-count">0</b>
+        </button>
+        <button data-filter="recorded" class="nav">
+          <span>◉</span> With recordings <b id="recorded-count">0</b>
+        </button>
+        <button data-filter="all" class="nav">
+          <span>☷</span> All activity <b id="all-count">0</b>
+        </button>
+        <button data-filter="simulation" class="nav">
+          <span>◌</span> Simulations <b id="sim-count">0</b>
+        </button>
+      </nav>
+      <div class="local-note">
+        <span class="status-dot"></span> Only on this Mac
+        <p>Your dashboard and saved audio stay on this computer.</p>
+      </div>
+      <div class="sidebar-footer">
+        Calling Assistant<span>Private call history</span>
+      </div>
+    </aside>
+    <main>
+      <header class="page-header">
+        <div>
+          <div class="eyebrow">YOUR CONVERSATIONS, IN ONE PLACE</div>
+          <h1>Call journal<span>.</span></h1>
+          <p>Every conversation. All the details.</p>
+        </div>
+        <div class="sync-controls">
+          <span id="sync-time">Loading saved history…</span
+          ><button id="refresh" class="button dark">
+            ↻ <span>Refresh history</span>
+          </button>
+        </div>
+      </header>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section class="stats" aria-label="History overview">
+        <article>
+          <span class="stat-label">PHONE CALLS</span
+          ><strong id="total-calls">—</strong
+          ><small>Live calls in your history</small>
+        </article>
+        <article>
+          <span class="stat-label">CONNECTED TIME</span
+          ><strong id="total-minutes">—</strong
+          ><small>Voice session time</small>
+        </article>
+        <article>
+          <span class="stat-label">CALL USAGE</span
+          ><strong id="total-cost">—</strong
+          ><small>Estimates unless finalized · excludes fixed fees</small>
+        </article>
+        <article>
+          <span class="stat-label">RECORDINGS</span
+          ><strong id="total-recordings">—</strong
+          ><small>Available audio files</small>
+        </article>
+      </section>
+      <section class="journal">
+        <div class="list-panel">
+          <div class="list-heading">
+            <h2 id="list-title">Phone calls</h2>
+            <span id="visible-count" class="count">0</span>
+          </div>
+          <label class="search"
+            ><span>⌕</span
+            ><input
+              id="search"
+              type="search"
+              placeholder="Search names, numbers, transcripts…"
+              aria-label="Search calls"
+          /></label>
+          <div class="list-tools">
+            <span>NEWEST FIRST</span
+            ><select id="status-filter" aria-label="Filter call status">
+              <option value="all">All statuses</option>
+              <option value="completed">Completed</option>
+              <option value="active">In progress</option>
+              <option value="uncertain">Uncertain</option>
+              <option value="failed">Failed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div id="call-list" class="call-list" aria-label="Calls">
+            <div class="empty">Loading your calls…</div>
+          </div>
+        </div>
+        <div id="detail" class="detail-panel">
+          <div class="empty detail-empty">
+            <span>↗</span>
+            <h2>A little more context.</h2>
+            <p>
+              Select a call to see its summary, recording, and conversation.
+            </p>
+          </div>
+        </div>
+      </section>
+      <footer class="page-footer">
+        <span
+          >Read-only access to your calling service · Refresh to retrieve new
+          calls.</span
+        ><span>Audio is never recreated from a transcript.</span>
+      </footer>
+    </main>
+    <input
+      id="audio-file"
+      type="file"
+      accept=".mp3,.wav,audio/mpeg,audio/wav"
+      hidden
+    />
+  </body>
+</html>

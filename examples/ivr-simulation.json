@@ -1,0 +1,34 @@
+{
+  "version": "1",
+  "mode": "simulation",
+  "destination": {
+    "number": "+14155550100",
+    "business": "Synthetic test recipient"
+  },
+  "caller": {
+    "name": "Test Owner"
+  },
+  "objective": "Ask for scheduling and provide the synthetic reference when prompted.",
+  "successCriteria": [
+    "Navigate both synthetic keypad prompts"
+  ],
+  "origin": {
+    "agent": "example"
+  },
+  "recording": "off",
+  "ivr": {
+    "mode": "assisted"
+  },
+  "facts": [
+    {
+      "id": "test-reference",
+      "text": "6204",
+      "visibility": "shareable"
+    }
+  ],
+  "simulation": {
+    "scenario": "ivr",
+    "durationSeconds": 120,
+    "questionAfterSeconds": 90
+  }
+}
